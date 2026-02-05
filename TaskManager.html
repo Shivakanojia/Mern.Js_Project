@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Task Manager</title>
+
+<style>
+body{
+  font-family: system-ui;
+  background:#0f172a;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  color:white;
+}
+.app{
+  width:360px;
+  background:#1e293b;
+  padding:20px;
+  border-radius:12px;
+}
+h2{text-align:center}
+
+input{
+  width:100%;
+  padding:8px;
+  border:none;
+  border-radius:6px;
+  margin-bottom:8px;
+}
+
+button{
+  padding:6px 8px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:12px;
+}
+
+.add{
+  width:100%;
+  background:#22c55e;
+  margin-bottom:10px;
+  color:white;
+}
+
+.tabs{
+  display:flex;
+  gap:5px;
+  margin-bottom:10px;
+}
+.tabs button{
+  flex:1;
+  background:#334155;
+  color:white;
+}
+.active{background:#38bdf8!important}
+
+li{
+  background:#334155;
+  margin:6px 0;
+  padding:8px;
+  border-radius:6px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+ul{list-style:none;padding:0}
+.done{text-decoration:line-through;color:#94a3b8}
+
+.actions button{
+  margin-left:5px;
+}
+
+.completeBtn{background:#22c55e;color:white}
+.deleteBtn{background:#ef4444;color:white}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <h2>📝 Task Manager</h2>
+
+  <input id="task" placeholder="New task..." />
+  <button class="add" onclick="add()">Add Task</button>
+
+  <div class="tabs">
+    <button id="pBtn" class="active" onclick="show('p')">Pending</button>
+    <button id="cBtn" onclick="show('c')">Completed</button>
+  </div>
+
+  <ul id="list"></ul>
+</div>
+
+<script>
+let P = JSON.parse(localStorage.p || "[]");
+let C = JSON.parse(localStorage.c || "[]");
+let view = "p";
+
+const save=()=>{
+  localStorage.p=JSON.stringify(P);
+  localStorage.c=JSON.stringify(C);
+}
+
+function add(){
+  if(task.value.trim()){
+    P.push(task.value);
+    task.value="";
+    save(); 
+    render();
+  }
+}
+
+function done(i){
+  C.push(P[i]);
+  P.splice(i,1);
+  save(); 
+  render();
+}
+
+function delPending(i){
+  P.splice(i,1);
+  save(); 
+  render();
+}
+
+function delCompleted(i){
+  C.splice(i,1);
+  save(); 
+  render();
+}
+
+function show(v){
+  view=v;
+  pBtn.classList.toggle("active",v==="p");
+  cBtn.classList.toggle("active",v==="c");
+  render();
+}
+
+function render(){
+  list.innerHTML="";
+  (view==="p"?P:C).forEach((t,i)=>{
+    if(view==="p"){
+      list.innerHTML+=`
+      <li>
+        ${t}
+        <div class="actions">
+          <button class="completeBtn" onclick="done(${i})">Complete</button>
+          <button class="deleteBtn" onclick="delPending(${i})">Delete</button>
+        </div>
+      </li>`;
+    }else{
+      list.innerHTML+=`
+      <li class="done">
+        ${t}
+        <div class="actions">
+          <button class="deleteBtn" onclick="delCompleted(${i})">Delete</button>
+        </div>
+      </li>`;
+    }
+  });
+}
+
+render();
+</script>
+</body>
+</html>
