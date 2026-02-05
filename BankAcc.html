@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bank Account</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #1d2671, #c33764);
+    color: white;
+  }
+
+  .app {
+    background: white;
+    color: black;
+    padding: 25px;
+    width: 380px;
+    border-radius: 16px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  input {
+    width: 100%;
+    padding: 12px;
+    margin: 6px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+  }
+
+  input:focus {
+    border-color: #1d2671;
+    box-shadow: 0 0 5px rgba(29,38,113,0.5);
+  }
+
+  .row {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+    transition: 0.3s;
+  }
+
+  .deposit { background: #22c55e; }
+  .withdraw { background: #ef4444; }
+  .reset { background: #64748b; }
+
+  button:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+
+  .box {
+    margin-top: 15px;
+    padding: 12px;
+    background: #f1f5f9;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+
+  .history {
+    margin-top: 15px;
+    max-height: 120px;
+    overflow-y: auto;
+    background: #f9fafb;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+  }
+
+  .history div {
+    margin: 3px 0;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="app">
+  <h2>💳 Bank Account</h2>
+
+  <input type="number" id="depositAmount" placeholder="Deposit Amount">
+  <input type="number" id="withdrawAmount" placeholder="Withdraw Amount">
+
+  <div class="row">
+    <button class="deposit" onclick="depositMoney()">Deposit</button>
+    <button class="withdraw" onclick="withdrawMoney()">Withdraw</button>
+    <button class="reset" onclick="resetAccount()">Reset</button>
+  </div>
+
+  <div class="box">
+    <p><strong>Previous Balance:</strong> ₹<span id="prevBalance">500</span></p>
+    <p><strong>Action:</strong> <span id="action">None</span></p>
+    <p><strong>Current Balance:</strong> ₹<span id="currentBalance">500</span></p>
+  </div>
+
+  <div class="history" id="history">
+    <strong>Transaction History</strong>
+  </div>
+</div>
+
+<script>
+function createAccount(initialAmount) {
+  let balance = initialAmount;
+
+  return {
+    getBalance() { return balance; },
+    deposit(amount) { balance += amount; return balance; },
+    withdraw(amount) {
+      if (amount > balance) return null;
+      balance -= amount; 
+      return balance;
+    },
+    reset() { balance = 500; return balance; }
+  };
+}
+
+const account = createAccount(500);
+
+function addHistory(text) {
+  const div = document.createElement("div");
+  div.innerText = text;
+  document.getElementById("history").appendChild(div);
+}
+
+function clearInputs(){
+  depositAmount.value = "";
+  withdrawAmount.value = "";
+}
+
+function depositMoney() {
+  const amount = Number(depositAmount.value);
+  if (amount <= 0) return alert("Enter valid deposit amount");
+
+  prevBalance.innerText = account.getBalance();
+  const newBalance = account.deposit(amount);
+
+  currentBalance.innerText = newBalance;
+  action.innerText = `Deposited ₹${amount}`;
+  addHistory(`+₹${amount}`);
+  clearInputs();
+}
+
+function withdrawMoney() {
+  const amount = Number(withdrawAmount.value);
+  if (amount <= 0) return alert("Enter valid withdraw amount");
+
+  prevBalance.innerText = account.getBalance();
+  const result = account.withdraw(amount);
+
+  if (result === null) {
+    alert("Insufficient Balance");
+    return;
+  }
+
+  currentBalance.innerText = result;
+  action.innerText = `Withdrawn ₹${amount}`;
+  addHistory(`-₹${amount}`);
+  clearInputs();
+}
+
+function resetAccount() {
+  const bal = account.reset();
+  prevBalance.innerText = bal;
+  currentBalance.innerText = bal;
+  action.innerText = "Account Reset";
+  history.innerHTML = "<strong>Transaction History</strong>";
+}
+</script>
+
+</body>
+</html>
