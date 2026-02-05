@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Stopwatch</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+  }
+
+  .card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    width: 300px;
+  }
+
+  h1 {
+    font-size: 48px;
+    margin-bottom: 25px;
+    color: #333;
+    letter-spacing: 2px;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    color: white;
+    transition: 0.3s;
+  }
+
+  .start { background: #28a745; }
+  .stop { background: #dc3545; }
+  .reset { background: #ffc107; color: black; }
+
+  button:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1 id="t">00:00</h1>
+  <div class="buttons">
+    <button class="start" onclick="start()">Start</button>
+    <button class="stop" onclick="stop()">Stop</button>
+    <button class="reset" onclick="reset()">Reset</button>
+  </div>
+</div>
+
+<script>
+let s = 0, m = 0, timer;
+
+function start() {
+  if (timer) return;
+  timer = setInterval(() => {
+    s++;
+    if (s == 60) { s = 0; m++; }
+    t.innerText = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
+  }, 1000);
+}
+
+function stop() {
+  clearInterval(timer);
+  timer = null;
+}
+
+function reset() {
+  stop();
+  s = m = 0;
+  t.innerText = "00:00";
+}
+</script>
+
+</body>
+</html>
