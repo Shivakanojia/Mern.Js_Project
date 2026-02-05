@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Form</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+  }
+
+  .container {
+    width: 450px;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #333;
+    letter-spacing: 1px;
+  }
+
+  input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 14px;
+    transition: 0.3s;
+  }
+
+  input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 5px rgba(102,126,234,0.5);
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    background: #5a67d8;
+  }
+
+  table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  th, td {
+    padding: 10px;
+    text-align: center;
+  }
+
+  th {
+    background: #667eea;
+    color: white;
+  }
+
+  tr:nth-child(even) {
+    background: #f9f9f9;
+  }
+
+  tr:hover {
+    background: #ececff;
+  }
+
+  .deleteBtn {
+    background: #e53e3e;
+    border: none;
+    color: white;
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+
+  .deleteBtn:hover {
+    opacity: 0.8;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Student Form</h2>
+
+  <input type="text" id="name" placeholder="Enter Name">
+  <input type="number" id="age" placeholder="Enter Age">
+  <input type="text" id="course" placeholder="Enter Course">
+
+  <button onclick="addData()">Add Student</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Course</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+</div>
+
+<script>
+function addData() {
+  let name = document.getElementById("name").value.trim();
+  let age = document.getElementById("age").value.trim();
+  let course = document.getElementById("course").value.trim();
+
+  if (name === "" || age === "" || course === "") {
+    alert("Please fill all fields");
+    return;
+  }
+
+  let table = document.getElementById("tableBody");
+  let row = table.insertRow();
+
+  row.insertCell(0).innerText = name;
+  row.insertCell(1).innerText = age;
+  row.insertCell(2).innerText = course;
+
+  let actionCell = row.insertCell(3);
+  let delBtn = document.createElement("button");
+  delBtn.innerText = "Delete";
+  delBtn.className = "deleteBtn";
+  delBtn.onclick = function () {
+    row.remove();
+  };
+  actionCell.appendChild(delBtn);
+
+  // clear inputs
+  document.getElementById("name").value = "";
+  document.getElementById("age").value = "";
+  document.getElementById("course").value = "";
+}
+</script>
+
+</body>
+</html>
