@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voting App</title>
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg,#1e3c72,#2a5298);
+            color:white;
+            text-align:center;
+            padding-top:40px;
+        }
+
+        h2{
+            margin-bottom:20px;
+        }
+
+        .btn{
+            padding:12px 25px;
+            margin:10px;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+            font-size:16px;
+            font-weight:bold;
+            transition:0.3s;
+        }
+
+        .bjp{ background:#ff9933; }
+        .cong{ background:#19aaed; }
+        .aap{ background:#00c853; }
+        .reset{ background:#e53935; }
+
+        .btn:hover{
+            transform:scale(1.05);
+            opacity:0.9;
+        }
+
+        table{
+            margin:30px auto;
+            border-collapse:collapse;
+            background:white;
+            color:black;
+            width:300px;
+            border-radius:10px;
+            overflow:hidden;
+        }
+
+        th,td{
+            padding:12px;
+            border:1px solid #ddd;
+        }
+
+        th{
+            background:#333;
+            color:white;
+        }
+
+        #winner{
+            margin-top:20px;
+            font-size:20px;
+            font-weight:bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Voting System</h2>
+
+<button class="btn bjp" onclick="addData('BJP')">BJP</button>
+<button class="btn cong" onclick="addData('CONG')">CONG</button>
+<button class="btn aap" onclick="addData('AAP')">AAP</button>
+<br>
+<button class="btn reset" onclick="resetVotes()">Reset</button>
+
+<table>
+    <thead>
+        <tr>
+            <th>BJP</th>
+            <th>CONG</th>
+            <th>AAP</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td id="bjpCount">0</td>
+            <td id="congCount">0</td>
+            <td id="aapCount">0</td>
+        </tr>
+    </tbody>
+</table>
+
+<div id="winner">No Winner Yet</div>
+
+<script>
+    let bjp = 0;
+    let cong = 0;
+    let aap = 0;
+
+    function addData(party){
+        if(party === "BJP"){
+            bjp++;
+            document.getElementById("bjpCount").innerHTML = bjp;
+        }
+        else if(party === "CONG"){
+            cong++;
+            document.getElementById("congCount").innerHTML = cong;
+        }
+        else if(party === "AAP"){
+            aap++;
+            document.getElementById("aapCount").innerHTML = aap;
+        }
+
+        showWinner();
+    }
+
+    function showWinner(){
+        let winnerText = "Tie";
+
+        if(bjp > cong && bjp > aap){
+            winnerText = "BJP is Winning";
+        }
+        else if(cong > bjp && cong > aap){
+            winnerText = "CONG is Winning";
+        }
+        else if(aap > bjp && aap > cong){
+            winnerText = "AAP is Winning";
+        }
+
+        document.getElementById("winner").innerHTML = winnerText;
+    }
+
+    function resetVotes(){
+        bjp = 0;
+        cong = 0;
+        aap = 0;
+
+        document.getElementById("bjpCount").innerHTML = 0;
+        document.getElementById("congCount").innerHTML = 0;
+        document.getElementById("aapCount").innerHTML = 0;
+        document.getElementById("winner").innerHTML = "No Winner Yet";
+    }
+</script>
+
+</body>
+</html>
+mn
